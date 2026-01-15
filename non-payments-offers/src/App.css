@@ -1,0 +1,373 @@
+/* ===========================
+   Global
+=========================== */
+body{
+  font-family: Arial, sans-serif;
+  color:#333;
+  margin:0;
+  padding:0;
+  background: linear-gradient(
+    135deg,
+    #F8F9FA 3%,
+    #E9ECEF 100%,
+    #CECDC9 100%
+  );
+}
+
+/* Scrollable (horizontal) chips row */
+.chip-row{
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  padding: 6px 4px;
+  -webkit-overflow-scrolling: touch; /* smooth on mobile */
+  scrollbar-width: thin; /* firefox */
+}
+
+/* prevent chips from shrinking */
+.chip-row .chip{
+  flex: 0 0 auto;
+}
+
+/* optional: nicer scrollbar (chrome/edge) */
+.chip-row::-webkit-scrollbar{
+  height: 6px;
+}
+.chip-row::-webkit-scrollbar-thumb{
+  background: #cfd8e3;
+  border-radius: 999px;
+}
+
+.App{
+  text-align:center;
+  padding:20px;
+  font-family:'Libre Baskerville', serif;
+}
+
+/* ===========================
+   Section & Titles
+=========================== */
+.offers-section{
+  margin:0 auto;
+  padding:20px;
+}
+
+.offer-group{
+  margin:24px 0 8px;
+}
+
+.offer-group > h2{
+  text-align:center;
+  font-weight:700;
+  font-size:27px;
+  margin:6px 0 22px;
+}
+
+/* ===========================
+   Grid & Cards
+=========================== */
+.offer-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap:32px;
+  justify-items:stretch;
+  align-items:stretch;
+}
+
+.offer-card{
+  background:#fff;
+  border-radius:12px;
+  border:1px solid #eee;
+  box-shadow:0 6px 18px rgba(0,0,0,0.07);
+  overflow:hidden;
+  width:350px;
+  margin:0 auto;
+  max-width:100%;
+}
+
+/* Main offer image */
+.offer-img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  display:block;
+}
+
+/* When we're showing a site logo fallback, don't crop it */
+.offer-img.is-fallback{
+  background:#fff;
+  object-fit:contain;
+  padding:16px;
+  height:220px;
+  box-sizing:border-box;
+}
+
+.offer-info{
+  padding:18px 18px 20px;
+  text-align:center;
+  font-family:'Libre Baskerville', serif;
+}
+
+.offer-title{
+  font-size:18px;
+  font-weight:700;
+  margin:6px 0 10px;
+  text-transform:uppercase;
+  letter-spacing:0.2px;
+}
+
+.offer-desc{
+  font-size:16px;
+  line-height:1.65;
+  margin:0 0 10px 0;
+}
+
+.coupon-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin:8px 0;
+}
+
+.coupon-code{
+  padding:6px 10px;
+  border:1px dashed #ccc;
+  border-radius:6px;
+  font-size:14px;
+  background:#f9f9f9;
+  font-family: monospace;
+}
+
+/* CTA */
+.btn{
+  background:#1e7145;
+  color:#fff;
+  border:none;
+  padding:10px 18px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:14px;
+}
+.btn:hover{
+  filter:brightness(0.95);
+}
+
+/* ===========================
+   Disclaimer
+=========================== */
+.disclaimer{
+  max-width:900px;
+  margin:36px auto 84px;
+  text-align:center;
+  color:#2f2f2f;
+  font-family:'Libre Baskerville', serif;
+  padding:0 16px;
+}
+.disclaimer h3{
+  font-size:22px;
+  font-weight:700;
+  margin:0 0 10px;
+  letter-spacing:.2px;
+}
+.disclaimer p{
+  font-size:16px;
+  line-height:1.65;
+  margin:0;
+}
+.disclaimer::before{
+  content:"";
+  display:block;
+  width:84%;
+  max-width:760px;
+  height:1px;
+  background:#e9e9e9;
+  margin:0 auto 18px;
+}
+
+/* ===========================================================
+   ✅ NON-PAYMENT OFFERS PAGE
+=========================================================== */
+.top-panel{
+  max-width: 1200px;
+  margin: 14px auto 0;
+  padding: 14px 16px;
+  background: #F7F9FC;
+  border: 1px solid #E8EDF3;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(15,23,42,.06);
+
+  overflow: visible;
+  position: relative;
+  z-index: 2;
+}
+
+/* ✅ button style (fix click issues) */
+.top-click{
+  width: 100%;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1F2D45;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+  user-select: none;
+
+  padding: 14px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #E8EDF3;
+
+  outline: none;
+}
+.top-click:hover{
+  background:#F0F5FF;
+}
+
+.top-subtitle{
+  font-weight: 700;
+  font-size: 16px;
+  color: #1F2D45;
+  margin: 12px 0 10px;
+}
+
+marquee{
+  display:block;
+  width:100%;
+  overflow:hidden;
+}
+
+.marquee{
+  display:block;
+  width:100%;
+  white-space: nowrap;
+  margin-top: 6px;
+  position: relative;
+  z-index: 3;
+}
+
+.chip{
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #E0E6EE;
+  border-radius: 9999px;
+  margin-right: 10px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.2;
+  user-select: none;
+  color:#1F2D45;
+}
+.chip:hover{
+  background: #F0F5FF;
+}
+.chip-active{
+  background: #F0F5FF;
+  border-color: #7a8cff;
+}
+
+.center-title{
+  text-align:center;
+  font-weight:700;
+  font-size:27px;
+  margin:6px 0 22px;
+}
+
+.center-text{
+  text-align:center;
+  margin-top: 20px;
+  font-size: 18px;
+}
+.center-text.error{
+  color: red;
+}
+
+.scroll-box{
+  max-height: 120px;
+  overflow-y: auto;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-right: 4px;
+}
+.terms-box{
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+
+.source-note{
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 1024px){
+  .offer-grid{
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap:28px;
+  }
+  .offer-img{
+    height:200px;
+  }
+  .offer-img.is-fallback{
+    height:200px;
+  }
+}
+
+@media (max-width: 768px){
+  .offer-grid{
+    grid-template-columns: 1fr;
+    gap:22px;
+    justify-items:center;
+  }
+
+  .offer-card{
+    max-width: 280px;
+    width:100%;
+  }
+
+  .offer-img{
+    height:auto;
+  }
+  .offer-img.is-fallback{
+    height:auto;
+    padding:20px;
+  }
+
+  .offer-title{
+    font-size:17px;
+  }
+  .offer-desc{
+    font-size:15px;
+  }
+
+  .disclaimer{
+    margin:28px auto 64px;
+  }
+  .disclaimer h3{
+    font-size:20px;
+  }
+  .disclaimer p{
+    font-size:14.4px;
+    line-height:1.7;
+  }
+
+  .top-panel{
+    margin: 14px auto 0;
+    max-width: 92%;
+  }
+}
