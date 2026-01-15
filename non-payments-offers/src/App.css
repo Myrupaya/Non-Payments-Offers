@@ -43,11 +43,77 @@ body{
   border-radius: 999px;
 }
 
+/* ===========================
+   ✅ Category chips row scrollable
+=========================== */
+.chip-row{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding: 6px 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.chip-row::-webkit-scrollbar{
+  height: 6px;
+}
+.chip-row::-webkit-scrollbar-thumb{
+  background: rgba(31,45,69,0.25);
+  border-radius: 999px;
+}
+
+/* ===========================
+   ✅ Grouped source sections
+=========================== */
+.source-group{
+  margin-top: 22px;
+}
+
+.source-heading{
+  text-align: left;
+  font-weight: 1000;
+  font-size: 28px;
+  color: #1F2D45;
+  margin: 6px 0 14px;
+  padding-left: 16px;
+  padding-top: 25px;
+  padding-bottom: 16px;
+}
+
+
 .App{
   text-align:center;
   padding:20px;
   font-family:'Libre Baskerville', serif;
 }
+
+/* ✅ horizontal row for offers inside each source */
+.offer-row{
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 6px 14px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.offer-row::-webkit-scrollbar{
+  height: 7px;
+}
+.offer-row::-webkit-scrollbar-thumb{
+  background: rgba(31,45,69,0.25);
+  border-radius: 999px;
+}
+
+/* cards should not shrink in row */
+.offer-card--horizontal{
+  flex: 0 0 auto;
+  width: 350px;      /* keep same */
+  margin: 0;         /* row handles spacing */
+}
+
 
 /* ===========================
    Section & Titles

@@ -73,19 +73,12 @@ const CATEGORY_CONFIG = [
   },
 ];
 
-
 const LIST_FIELDS = {
   title: ["Offer Title", "Title", "Offer"],
   image: ["Image", "Offer Image", "image", "Credit Card Image"],
   link: ["Link", "Offer Link"],
   desc: ["Description", "Details", "Offer Description", "Benefit"],
-  terms: [
-    "Terms and conditions",
-    "Terms & conditions",
-    "Terms & Conditions",
-    "T&C",
-    "Terms",
-  ],
+  terms: ["Terms and conditions", "Terms & conditions", "Terms & Conditions", "T&C", "Terms"],
   coupon: ["Coupon code", "Coupon Code", "Coupon", "Code"],
 };
 
@@ -154,30 +147,37 @@ function handleImgError(e, categoryKey) {
   }
 }
 
+function prettySourceName(fileName) {
+  if (!fileName) return "";
+  const name = String(fileName).replace(/\.csv$/i, "").trim();
+  // ✅ Capitalize nicely: "goibibo" -> "Goibibo"
+  return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
+}
+
 /** Disclaimer */
 const Disclaimer = () => (
   <section className="disclaimer">
     <h3>Disclaimer</h3>
     <p>
-      All offers, coupons, and discounts listed on our platform are provided for
-      informational purposes only. We do not guarantee the accuracy,
-      availability, or validity of any offer. Users are advised to verify the
-      terms and conditions with the respective merchants before making any
-      purchase. We are not responsible for any discrepancies, expired offers, or
-      losses arising from the use of these coupons.
+      All offers, coupons, and discounts listed on our platform are provided for informational purposes only.
+      We do not guarantee the accuracy, availability, or validity of any offer.
+      Users are advised to verify the terms and conditions with the respective merchants before making any purchase.
+      We are not responsible for any discrepancies, expired offers, or losses arising from the use of these coupons.
     </p>
   </section>
 );
 
 /** -------------------- COMPONENT -------------------- */
 export default function NonPaymentOffers() {
-  const [activeCategory, setActiveCategory] = useState(
-    CATEGORY_CONFIG?.[0]?.key || null
-  );
-
+  const [activeCategory, setActiveCategory] = useState(CATEGORY_CONFIG?.[0]?.key || null);
   const [loading, setLoading] = useState(false);
   const [rawRows, setRawRows] = useState([]);
   const [error, setError] = useState("");
+
+  const activeCat = useMemo(
+    () => CATEGORY_CONFIG.find((c) => c.key === activeCategory) || null,
+    [activeCategory]
+  );
 
   async function loadCategory(categoryKey) {
     setActiveCategory(categoryKey);
@@ -196,13 +196,8 @@ export default function NonPaymentOffers() {
       await Promise.all(
         (cat.files || []).map(async (name) => {
           try {
-            const res = await axios.get(
-              `/${cat.folder}/${encodeURIComponent(name)}`
-            );
-            const parsed = Papa.parse(res.data, {
-              header: true,
-              skipEmptyLines: true,
-            });
+            const res = await axios.get(`/${cat.folder}/${encodeURIComponent(name)}`);
+            const parsed = Papa.parse(res.data, { header: true, skipEmptyLines: true });
             const rows = parsed.data || [];
             rows.forEach((r) => all.push({ ...r, __sourceFile: name }));
           } catch (e) {
@@ -235,6 +230,27 @@ export default function NonPaymentOffers() {
     return out;
   }, [rawRows]);
 
+  /** Group offers by CSV source file */
+  const groupedOffers = useMemo(() => {
+    const map = new Map();
+    for (const row of offers) {
+      const srcFile = row.__sourceFile || "Other.csv";
+      const srcKey = prettySourceName(srcFile) || "Other";
+      if (!map.has(srcKey)) map.set(srcKey, []);
+      map.get(srcKey).push(row);
+    }
+    return map;
+  }, [offers]);
+
+  /** Render groups in SAME order as config files */
+  const orderedSourceKeys = useMemo(() => {
+    const inOrder = (activeCat?.files || []).map((f) => prettySourceName(f));
+    for (const k of groupedOffers.keys()) {
+      if (!inOrder.includes(k)) inOrder.push(k);
+    }
+    return inOrder;
+  }, [activeCat, groupedOffers]);
+
   const OfferCard = ({ row, categoryKey }) => {
     const title = firstField(row, LIST_FIELDS.title) || "Offer";
     const rawImage = firstField(row, LIST_FIELDS.image);
@@ -255,7 +271,7 @@ export default function NonPaymentOffers() {
     }
 
     return (
-      <div className="offer-card">
+      <div className="offer-card offer-card--horizontal">
         {imgSrc && (
           <img
             className={`offer-img ${usingFallback ? "is-fallback" : ""}`}
@@ -298,41 +314,35 @@ export default function NonPaymentOffers() {
               View Offer
             </button>
           )}
-
-          {row.__sourceFile && (
-            <div className="source-note">Source: {row.__sourceFile}</div>
-          )}
         </div>
       </div>
     );
   };
 
-  const activeLabel =
-    CATEGORY_CONFIG.find((c) => c.key === activeCategory)?.label || "Offers";
+  const activeLabel = activeCat?.label || "Offers";
 
   return (
     <div className="App">
-      {/* ✅ TOP PANEL ALWAYS VISIBLE */}
-   <div className="top-panel">
-  <div className="top-subtitle">Non Payment Offers</div>
+      {/* TOP PANEL ALWAYS VISIBLE */}
+      <div className="top-panel">
+        <div className="top-subtitle">Non Payment Offers</div>
 
-  <div className="chip-row">
-    {CATEGORY_CONFIG.map((c) => (
-      <span
-        key={c.key}
-        role="button"
-        tabIndex={0}
-        onClick={() => loadCategory(c.key)}
-        onKeyDown={(e) => (e.key === "Enter" ? loadCategory(c.key) : null)}
-        className={`chip ${activeCategory === c.key ? "chip-active" : ""}`}
-        title={`Click to open ${c.label}`}
-      >
-        {c.label}
-      </span>
-    ))}
-  </div>
-</div>
-
+        <div className="chip-row">
+          {CATEGORY_CONFIG.map((c) => (
+            <span
+              key={c.key}
+              role="button"
+              tabIndex={0}
+              onClick={() => loadCategory(c.key)}
+              onKeyDown={(e) => (e.key === "Enter" ? loadCategory(c.key) : null)}
+              className={`chip ${activeCategory === c.key ? "chip-active" : ""}`}
+              title={`Click to open ${c.label}`}
+            >
+              {c.label}
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* OFFERS ALWAYS VISIBLE */}
       {activeCategory && (
@@ -345,19 +355,34 @@ export default function NonPaymentOffers() {
             ) : error ? (
               <p className="center-text error">{error}</p>
             ) : offers.length ? (
-              <div className="offer-grid">
-                {offers.map((row, i) => (
-                  <OfferCard
-                    key={`${activeCategory}-${i}`}
-                    row={row}
-                    categoryKey={activeCategory}
-                  />
-                ))}
-              </div>
+              <>
+                {orderedSourceKeys.map((srcKey) => {
+                  const rows = groupedOffers.get(srcKey) || [];
+                  if (!rows.length) return null;
+
+                  return (
+                    <div key={`${activeCategory}-${srcKey}`} className="source-group">
+                      {/* ✅ Heading uses category label + source */}
+                      <div className="source-heading">
+                        {srcKey} Offers
+                      </div>
+
+                      {/* ✅ horizontal scroll row for cards */}
+                      <div className="offer-row">
+                        {rows.map((row, i) => (
+                          <OfferCard
+                            key={`${activeCategory}-${srcKey}-${i}`}
+                            row={row}
+                            categoryKey={activeCategory}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
             ) : (
-              <p className="center-text error">
-                No non-payment offers available
-              </p>
+              <p className="center-text error">No non-payment offers available</p>
             )}
           </div>
         </div>
