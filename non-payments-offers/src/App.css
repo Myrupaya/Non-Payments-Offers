@@ -81,6 +81,65 @@ body{
   padding-bottom: 16px;
 }
 
+/* ✅ makes CTA stick to bottom */
+.offer-info--stack{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.offer-body{
+  flex: 1 1 auto;
+}
+
+.offer-cta{
+  margin-top: 14px;
+  padding-top: 8px;
+}
+
+/* optional: make button full width */
+.btn-full{
+  width: 100%;
+}
+
+/* ✅ already needed for horizontal row */
+.offer-row{
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 6px 14px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.offer-row::-webkit-scrollbar{
+  height: 7px;
+}
+.offer-row::-webkit-scrollbar-thumb{
+  background: rgba(31,45,69,0.25);
+  border-radius: 999px;
+}
+
+.offer-card--horizontal{
+  flex: 0 0 auto;
+  width: 350px;
+  margin: 0;
+}
+
+.missing-box{
+  max-width: 1000px;
+  margin: 10px auto 18px;
+  text-align: left;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #7c2d12;
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+.missing-box ul{ margin: 8px 0 0; padding-left: 18px; }
+.missing-box li{ margin: 4px 0; }
+
 
 .App{
   text-align:center;
