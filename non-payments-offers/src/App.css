@@ -102,30 +102,61 @@ body{
   width: 100%;
 }
 
-/* ✅ already needed for horizontal row */
+/* horizontal scroll row for each source group */
 .offer-row{
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 6px 6px 14px;
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding: 6px 10px 16px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
 }
-
-.offer-row::-webkit-scrollbar{
-  height: 7px;
-}
+.offer-row::-webkit-scrollbar{ height: 6px; }
 .offer-row::-webkit-scrollbar-thumb{
-  background: rgba(31,45,69,0.25);
+  background: rgba(31,45,69,0.22);
   border-radius: 999px;
 }
 
+/* each card should NOT shrink in horizontal row */
 .offer-card--horizontal{
   flex: 0 0 auto;
-  width: 350px;
-  margin: 0;
+  width: 340px;  /* keep consistent */
+  max-width: 340px;
 }
+
+/* stack body + CTA so CTA can stick to bottom */
+.offer-info--stack{
+  display:flex;
+  flex-direction:column;
+  height: 100%;
+}
+
+/* card body takes remaining height */
+.offer-body{
+  flex: 1 1 auto;
+}
+
+/* CTA pinned to bottom with spacing */
+.offer-cta{
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+/* full width button */
+.btn-full{
+  width: 100%;
+}
+
+/* logo fallback looks better */
+.offer-img.is-fallback{
+  background:#fff;
+  object-fit:contain;
+  padding:16px;
+  height:220px;
+  box-sizing:border-box;
+}
+
 
 .missing-box{
   max-width: 1000px;
