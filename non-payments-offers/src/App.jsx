@@ -93,39 +93,39 @@ const LIST_FIELDS = {
 
 /** ✅ WEBSITE LOGOS */
 const WEBSITE_LOGO_BY_SOURCE = {
-  makemytrip:
-    "https://play-lh.googleusercontent.com/aYbdxj9f3B5mF9Xw6o6jXw2k3L2cR2iFqf9e_2Gm5q2GxgqzZxWv0r6mG0JQ=s256-rw",
-  goibibo:
-    "https://play-lh.googleusercontent.com/0ZP5j4Q9lP8o_0xjX5n8i7o1wYJ1vX0m5lQZl5Qp9m9h0lZ0q8nR6qv6h6s=s256-rw",
-  redbus:
-    "https://play-lh.googleusercontent.com/VV2V8qz3G7bZrLQKZ3oDq9x9f6sL0R6m8nq1C2u3bV0=s256-rw",
-  abhibus:
-    "https://play-lh.googleusercontent.com/1jD5f3m8lq3v9a1z7g8xQ5k6o2w4b1r2d3f4g5h6i7j=s256-rw",
-  ixigo:
-    "https://play-lh.googleusercontent.com/ZgBXowR57R5sLG3BmzrVDYH5f-3I18IMUl1IDGwUOPmGejvN0lzRYCSYsVNDSUW0H51M",
-  easemytrip:
-    "https://play-lh.googleusercontent.com/2xg2k3n7h7q8p9y8m3v2b1n0c9x8z7l6k5j4h3g2f1d=s256-rw",
-  yatra:
-    "https://play-lh.googleusercontent.com/3v4b5n6m7c8x9z0l1k2j3h4g5f6d7s8a9p0o=s256-rw",
-  indigo:
-    "https://play-lh.googleusercontent.com/7u6y5t4r3e2w1q0p9o8i7u6y5t4r3e2w1q0=s256-rw",
-  airindia:
-    "https://play-lh.googleusercontent.com/9p8o7i6u5y4t3r2e1w0q9p8o7i6u5y4t3r2=s256-rw",
-  bookmyshow:
-    "https://play-lh.googleusercontent.com/7wG2aCk3oTgH7E4V0JZgV8vCkIYvI6t6u8yK0d2y8p0v3v4m9mS3U5xXkYxQmQ=s256-rw",
-  paytmmovies:
-    "https://play-lh.googleusercontent.com/5t4r3e2w1q0p9o8i7u6y5t4r3e2w1q0p9o8=s256-rw",
-  cleartrip: "https://bottindia.com/wp-content/uploads/2023/09/Cleartrip.webp",
-  amazon:
-    "https://play-lh.googleusercontent.com/1j2k3l4m5n6b7v8c9x0z1a2s3d4f5g6h7j8=s256-rw",
-  flipkart:
-    "https://play-lh.googleusercontent.com/ZlVYv0mQzXy5mNqg3p1yYw2xZp0s4mQe8pQ=s256-rw",
-  myntra:
-    "https://play-lh.googleusercontent.com/0v9b8n7m6c5x4z3l2k1j0h9g8f7d6s5a4p3=s256-rw",
-  ajio:
-    "https://play-lh.googleusercontent.com/2b3n4m5c6x7z8l9k0j1h2g3f4d5s6a7p8o9=s256-rw",
-  tatacliq:
-    "https://play-lh.googleusercontent.com/4n5m6c7x8z9l0k1j2h3g4f5d6s7a8p9o0i1=s256-rw",
+  // makemytrip:
+  //   "https://play-lh.googleusercontent.com/aYbdxj9f3B5mF9Xw6o6jXw2k3L2cR2iFqf9e_2Gm5q2GxgqzZxWv0r6mG0JQ=s256-rw",
+  // goibibo:
+  //   "https://play-lh.googleusercontent.com/0ZP5j4Q9lP8o_0xjX5n8i7o1wYJ1vX0m5lQZl5Qp9m9h0lZ0q8nR6qv6h6s=s256-rw",
+  // redbus:
+  //   "https://play-lh.googleusercontent.com/VV2V8qz3G7bZrLQKZ3oDq9x9f6sL0R6m8nq1C2u3bV0=s256-rw",
+  // abhibus:
+  //   "https://play-lh.googleusercontent.com/1jD5f3m8lq3v9a1z7g8xQ5k6o2w4b1r2d3f4g5h6i7j=s256-rw",
+  // ixigo:
+  //   "https://play-lh.googleusercontent.com/ZgBXowR57R5sLG3BmzrVDYH5f-3I18IMUl1IDGwUOPmGejvN0lzRYCSYsVNDSUW0H51M",
+  // easemytrip:
+  //   "https://play-lh.googleusercontent.com/2xg2k3n7h7q8p9y8m3v2b1n0c9x8z7l6k5j4h3g2f1d=s256-rw",
+  // yatra:
+  //   "https://play-lh.googleusercontent.com/3v4b5n6m7c8x9z0l1k2j3h4g5f6d7s8a9p0o=s256-rw",
+  // indigo:
+  //   "https://play-lh.googleusercontent.com/7u6y5t4r3e2w1q0p9o8i7u6y5t4r3e2w1q0=s256-rw",
+  // airindia:
+  //   "https://play-lh.googleusercontent.com/9p8o7i6u5y4t3r2e1w0q9p8o7i6u5y4t3r2=s256-rw",
+  // bookmyshow:
+  //   "https://play-lh.googleusercontent.com/7wG2aCk3oTgH7E4V0JZgV8vCkIYvI6t6u8yK0d2y8p0v3v4m9mS3U5xXkYxQmQ=s256-rw",
+  // paytmmovies:
+  //   "https://play-lh.googleusercontent.com/5t4r3e2w1q0p9o8i7u6y5t4r3e2w1q0p9o8=s256-rw",
+  // cleartrip: "https://bottindia.com/wp-content/uploads/2023/09/Cleartrip.webp",
+  // amazon:
+  //   "https://play-lh.googleusercontent.com/1j2k3l4m5n6b7v8c9x0z1a2s3d4f5g6h7j8=s256-rw",
+  // flipkart:
+  //   "https://play-lh.googleusercontent.com/ZlVYv0mQzXy5mNqg3p1yYw2xZp0s4mQe8pQ=s256-rw",
+  // myntra:
+  //   "https://play-lh.googleusercontent.com/0v9b8n7m6c5x4z3l2k1j0h9g8f7d6s5a4p3=s256-rw",
+  // ajio:
+  //   "https://play-lh.googleusercontent.com/2b3n4m5c6x7z8l9k0j1h2g3f4d5s6a7p8o9=s256-rw",
+  // tatacliq:
+  //   "https://play-lh.googleusercontent.com/4n5m6c7x8z9l0k1j2h3g4f5d6s7a8p9o0i1=s256-rw",
 };
 
 const FALLBACK_IMAGE_BY_CATEGORY = {};
