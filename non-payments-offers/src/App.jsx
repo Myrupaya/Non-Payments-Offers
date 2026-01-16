@@ -15,7 +15,7 @@ const CATEGORY_CONFIG = [
     key: "hotel",
     label: "Hotel Offers",
     folder: "Hotel-Offers",
-    files: ["EaseMyTrip.csv", "Goibibo.csv", "MakeMyTrip.csv", "Ixigo.csv", "Yatra.csv"],
+    files: ["EaseMyTrip.csv", "Goibibo.csv", "MakeMyTrip.csv", "ixigo.csv", "Yatra.csv"],
   },
   {
     key: "airline",
