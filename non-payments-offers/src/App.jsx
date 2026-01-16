@@ -9,13 +9,13 @@ const CATEGORY_CONFIG = [
     key: "movie",
     label: "Movie Offers",
     folder: "Movie-Offers",
-    files: ["BookMyShow.csv", "PaytmMovies.csv"],
+    files: ["Bookmyshow.csv", "district-paytm.csv", "PVR.csv"],
   },
   {
     key: "hotel",
     label: "Hotel Offers",
     folder: "Hotel-Offers",
-    files: ["Cleartrip.csv", "Goibibo.csv", "MakeMyTrip.csv"],
+    files: ["EaseMyTrip.csv", "Goibibo.csv", "MakeMyTrip.csv", "Ixigo.csv", "Yatra.csv"],
   },
   {
     key: "airline",
@@ -42,7 +42,7 @@ const CATEGORY_CONFIG = [
     key: "electronics",
     label: "Electronics Offers",
     folder: "Electronics-Offers",
-    files: ["Amazon.csv", "Flipkart.csv", "Croma.csv"],
+    files: ["croma.csv"],
   },
   {
     key: "dineout",
@@ -66,7 +66,7 @@ const CATEGORY_CONFIG = [
     key: "ecommerce",
     label: "Ecommerce Offers",
     folder: "Ecommerce-Offers",
-    files: ["Amazon.csv", "Flipkart.csv", "Myntra.csv"],
+    files: ["croma.csv"],
   },
   {
     key: "lounge",
@@ -92,59 +92,49 @@ const LIST_FIELDS = {
 };
 
 /**
- * ✅ IMPORTANT:
- * Best practice is: keep logos locally in /public/logos/
- * Example: public/logos/makemytrip.png  ->  "/logos/makemytrip.png"
+ * ✅ Put these files inside: public/images/
+ * Example: public/images/paytm.jpg  -> use "/images/paytm.jpg"
  *
- * But if you want remote logos, you can keep URLs.
+ * ✅ Must start with "/" in React
  */
 const WEBSITE_LOGO_BY_SOURCE = {
-  makemytrip: "/public/images/make my trip.png",
-  airindia:"/public/images/airindia.webp",
-  goibibo: "/public/images/goibibo.png",
-  redbus: "/public/images/redbus.png",
-  abhibus: "/public/images/abhibus.png",
-  ixigo: "/public/images/ixigo.png",
-  easemytrip: "/public/images/ease my trip.png",
-  yatra: "/public/images/yatra.png",
-  indigo: "/public/images/Indigo.png",
-  airindia: "/logos/airindia.png",
-  bookmyshow: "/logos/bookmyshow.png",
-  paytmmovies: "/logos/paytm.png",
-  cleartrip: "/logos/cleartrip.png",
-  amazon: "/logos/amazon.png",
-  flipkart: "/logos/flipkart.png",
-  myntra: "/logos/myntra.png",
-  ajio: "/logos/ajio.png",
-  tatacliq: "/logos/tatacliq.png",
-  croma: "/logos/croma.png",
-  blinkit: "/logos/blinkit.png",
-  zepto: "/logos/zepto.png",
-  bigbasket: "/logos/bigbasket.png",
-  swiggy: "/logos/swiggy.png",
-  zomato: "/logos/zomato.png",
-  eazydiner: "/logos/eazydiner.png",
-  swiggydineout: "/logos/swiggy.png",
-  zomatodining: "/logos/zomato.png",
+  makemytrip: "/images/make%20my%20trip.png",
+  airindia: "/images/airindia.webp",
+  goibibo: "/images/goibibo.png",
+  redbus: "/images/redbus.png",
+  abhibus: "/images/abhibus.png",
+  ixigo: "/images/ixigo.png",
+  easemytrip: "/images/ease%20my%20trip.png",
+  yatra: "/images/yatra.png",
+  indigo: "/images/Indigo.png",
+  croma: "/images/croma.png",
+  bookmyshow: "/images/bookmyshow.jpg",
+  districtpaytm: "/images/paytm.jpg",
+  pvr: "/images/pvr.jpg",
 };
 
 /** -------------------- HELPERS -------------------- */
+
+/** ✅ NEW: removes BOM + zero-width chars that break header matching */
+function stripInvisible(s) {
+  return String(s || "").replace(/[\uFEFF\u200B-\u200D]/g, "");
+}
+
 const toNorm = (s) =>
-  String(s || "")
+  stripInvisible(String(s || ""))
     .toLowerCase()
     .normalize("NFKD")
     .replace(/[^\w\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
-/** Treat underscores like spaces too (for Image_1 etc) */
 const toKeyNorm = (s) => toNorm(s).replace(/_/g, " ");
 
 function isNonEmpty(v) {
   return v !== undefined && v !== null && String(v).trim() !== "";
 }
 
-/** ✅ Works even if Papa renamed duplicates: Image -> Image_1, Link -> Link_2 */
+/** ✅ Works even if Papa renamed duplicates: Link -> Link_1 etc */
 function pickField(row, candidates) {
   if (!row) return undefined;
 
@@ -153,20 +143,18 @@ function pickField(row, candidates) {
     if (isNonEmpty(row[k])) return row[k];
   }
 
-  // 2) normalized exact match
+  // 2) normalized match (handles Link_1, Link_2 and BOM headers)
   const wantedNorms = candidates.map(toKeyNorm);
   const keys = Object.keys(row);
 
   for (const k of keys) {
     const kn = toKeyNorm(k);
     for (const wn of wantedNorms) {
-      // exact OR "image 1" starts with "image"
       if (kn === wn || kn.startsWith(wn + " ")) {
         if (isNonEmpty(row[k])) return row[k];
       }
     }
   }
-
   return undefined;
 }
 
@@ -185,53 +173,101 @@ function isYes(val) {
   return v === "yes" || v === "y" || v === "true" || v === "1";
 }
 
+/**
+ * ✅ Only treat REAL URLs or public paths as usable images
+ * - Rejects: "Chartered1.png", "Desktop Detail page.png" etc
+ */
 function isUsableImage(val) {
   if (!val) return false;
   const s = String(val).trim();
   if (!s) return false;
   if (/^(na|n\/a|null|undefined|-|image unavailable)$/i.test(s)) return false;
-  return true;
+
+  if (/^https?:\/\//i.test(s)) return true;
+  if (/^data:image\//i.test(s)) return true;
+  if (s.startsWith("/")) return true;
+
+  return false;
 }
 
-function isUsableLink(val) {
-  if (!val) return false;
-  const s = String(val).trim();
-  if (!s) return false;
-  if (/^(na|n\/a|null|undefined|-|#)$/i.test(s)) return false;
-  return /^https?:\/\//i.test(s);
-}
+/** ✅ Link normalize (fix for AirIndia etc) */
+function normalizeLink(raw) {
+  if (!raw) return "";
 
-function prettySourceName(fileName) {
-  if (!fileName) return "";
-  const name = String(fileName).replace(/\.csv$/i, "").trim();
-  return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
+  let s = stripInvisible(String(raw)).trim();
+  if (!s) return "";
+
+  // remove outer quotes
+  s = s.replace(/^"+|"+$/g, "").trim();
+
+  // placeholders
+  if (/^(na|n\/a|null|undefined|-|#)$/i.test(s)) return "";
+
+  // //example.com
+  if (s.startsWith("//")) s = "https:" + s;
+
+  // www.example.com
+  if (/^www\./i.test(s)) s = "https://" + s;
+
+  // no scheme but looks like a domain
+  const looksLikeDomain = /^[a-z0-9.-]+\.[a-z]{2,}([/].*)?$/i.test(s);
+  if (!/^https?:\/\//i.test(s) && looksLikeDomain) s = "https://" + s;
+
+  // must be http(s)
+  if (!/^https?:\/\//i.test(s)) return "";
+
+  // validate URL
+  try {
+    // eslint-disable-next-line no-new
+    new URL(s);
+    return s;
+  } catch {
+    return "";
+  }
 }
 
 /**
- * ✅ Very important:
- * yatraDomestic.csv / yatraInternational.csv should map to yatra logo
+ * ✅ Source key mapping:
+ * - yatraDomestic / yatraInternational -> yatra
+ * - easeMyTrip -> easemytrip
+ * - district-paytm -> districtpaytm
+ * - Bookmyshow -> bookmyshow
  */
 function sourceKeyFromFile(fileName) {
   const base = toNorm(String(fileName || "").replace(/\.csv$/i, ""));
-  if (base.startsWith("yatra")) return "yatra";
-  return base;
+
+  // remove spaces + - + _
+  const cleaned = base.replace(/[\s\-_]/g, "");
+
+  if (cleaned.startsWith("yatra")) return "yatra";
+  if (cleaned.includes("easemytrip")) return "easemytrip";
+
+  return cleaned; // airindia, goibibo, indigo, makemytrip, districtpaytm, bookmyshow, pvr, etc
 }
 
-/** ✅ resolve image: if missing OR 404 -> website logo based on source */
+function prettySourceName(fileName) {
+  const raw = String(fileName || "").replace(/\.csv$/i, "");
+  const spaced = raw.replace(/[-_]/g, " ").trim();
+  if (!spaced) return "";
+  return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/** ✅ resolve image: if missing/invalid -> website logo */
 function resolveImage(candidate, sourceFileName) {
   const srcKey = sourceKeyFromFile(sourceFileName);
-  const websiteLogo = WEBSITE_LOGO_BY_SOURCE[srcKey];
+  const websiteLogo = WEBSITE_LOGO_BY_SOURCE[srcKey] || "";
 
-  const usingFallback = !isUsableImage(candidate);
-  if (!usingFallback) return { src: candidate, usingFallback: false, fallbackSrc: websiteLogo || "" };
-
-  return { src: websiteLogo || "", usingFallback: true, fallbackSrc: websiteLogo || "" };
+  if (isUsableImage(candidate)) {
+    return { src: String(candidate).trim(), usingFallback: false, fallbackSrc: websiteLogo };
+  }
+  return { src: websiteLogo, usingFallback: true, fallbackSrc: websiteLogo };
 }
 
+/** ✅ if image 404 -> swap to logo */
 function handleImgError(e) {
   const el = e.currentTarget;
   const fallback = el.getAttribute("data-fallback") || "";
-  if (fallback && el.src !== window.location.origin + fallback && el.src !== fallback) {
+  if (fallback && el.src !== fallback) {
     el.src = fallback;
     el.classList.add("is-fallback");
     return;
@@ -252,7 +288,6 @@ const Disclaimer = () => (
   </section>
 );
 
-/** -------------------- COMPONENT -------------------- */
 export default function NonPaymentOffers() {
   const [activeCategory, setActiveCategory] = useState(CATEGORY_CONFIG?.[0]?.key || null);
   const [loading, setLoading] = useState(false);
@@ -287,8 +322,10 @@ export default function NonPaymentOffers() {
             const parsed = Papa.parse(res.data, {
               header: true,
               skipEmptyLines: true,
-              transformHeader: (h) => String(h || "").trim(),
+              // ✅ FIX: also strip BOM/zero-width from headers
+              transformHeader: (h) => stripInvisible(String(h || "")).trim(),
             });
+
             const rows = parsed.data || [];
             rows.forEach((r) => all.push({ ...r, __sourceFile: name }));
           } catch (e) {
@@ -300,10 +337,7 @@ export default function NonPaymentOffers() {
 
       setRawRows(all);
 
-      if (failed.length) {
-        // show warning but still show whatever loaded
-        setError(`Some files failed to load: ${failed.join(", ")}`);
-      }
+      if (failed.length) setError(`Some files failed to load: ${failed.join(", ")}`);
     } catch (e) {
       setError(e?.message || String(e));
     } finally {
@@ -311,13 +345,12 @@ export default function NonPaymentOffers() {
     }
   }
 
-  /** AUTO LOAD first category */
   useEffect(() => {
     if (activeCategory) loadCategory(activeCategory);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** ✅ Filter only Non-Payments-Offers = yes (supports many header spellings) */
+  /** ✅ Filter only Non-Payments-Offers = yes */
   const offers = useMemo(() => {
     const out = [];
     const NONPAY_KEYS = [
@@ -372,10 +405,15 @@ export default function NonPaymentOffers() {
     const desc = pickField(row, LIST_FIELDS.desc);
     const terms = pickField(row, LIST_FIELDS.terms);
     const coupon = pickField(row, LIST_FIELDS.coupon);
-    const link = pickField(row, LIST_FIELDS.link);
+
+    // ✅ Link field decides the button
+    const rawLink = pickField(row, LIST_FIELDS.link);
+    const normalizedLink = useMemo(() => normalizeLink(rawLink), [rawLink]);
+
+    // ✅ show button if link exists + valid URL format
+    const hasLink = !!normalizedLink;
 
     const { src: imgSrc, usingFallback, fallbackSrc } = resolveImage(rawImage, sourceFileName);
-    const hasLink = isUsableLink(link);
 
     const [copied, setCopied] = useState(false);
     async function onCopy(text) {
@@ -429,10 +467,10 @@ export default function NonPaymentOffers() {
             )}
           </div>
 
-          {/* ✅ button only if link exists + sticks to bottom */}
+          {/* ✅ Button only if link exists (valid URL format) + sticks to bottom */}
           {hasLink ? (
             <div className="offer-cta">
-              <button className="btn btn-full" onClick={() => window.open(link, "_blank")}>
+              <button className="btn btn-full" onClick={() => window.open(normalizedLink, "_blank")}>
                 View Offer
               </button>
             </div>
