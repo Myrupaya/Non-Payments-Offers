@@ -48,7 +48,7 @@ const CATEGORY_CONFIG = [
     key: "dineout",
     label: "Dineout Offers",
     folder: "Dineout-Offers",
-    files: ["SwiggyDineout.csv", "EazyDiner.csv", "ZomatoDining.csv"],
+    files: ["Swiggy.csv", "Eazydiner.csv", "Zomato.csv"],
   },
   {
     key: "delivery",
@@ -111,6 +111,9 @@ const WEBSITE_LOGO_BY_SOURCE = {
   bookmyshow: "/images/bookmyshow.jpg",
   districtpaytm: "/images/paytm.jpg",
   pvr: "/images/pvr.jpg",
+  zomato:"/images/zomato.png",
+  swiggy:"/images/swiggy.png",
+  eazydiner:"/images/eazydiner.png"
 };
 
 /** -------------------- HELPERS -------------------- */
