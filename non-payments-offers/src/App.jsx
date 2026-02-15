@@ -9,7 +9,7 @@ const CATEGORY_CONFIG = [
     key: "movie",
     label: "Movie Offers",
     folder: "Movie-Offers",
-    files: ["Bookmyshow.csv", "district-paytm.csv", "PVR.csv"],
+    files: ["Bookmyshow.csv", "district_paytm.csv", "PVR.csv"],
   },
   {
     key: "hotel",
