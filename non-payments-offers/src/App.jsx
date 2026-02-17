@@ -26,6 +26,7 @@ const CATEGORY_CONFIG = [
       "yatraDomestic.csv",
       "easeMyTrip.csv",
       "makemytrip.csv",
+      "cleartrip.csv",
       "airindia.csv",
       "goibibo.csv",
       "indigo.csv",
@@ -60,7 +61,7 @@ const CATEGORY_CONFIG = [
     key: "grocery",
     label: "Grocery Offers",
     folder: "Grocery-Offers",
-    files: ["Blinkit.csv", "Zepto.csv", "BigBasket.csv"],
+    files: ["blinkit.csv", "zepto.csv", "swiggy_instamart.csv"],
   },
   {
     key: "ecommerce",
@@ -111,6 +112,9 @@ const WEBSITE_LOGO_BY_SOURCE = {
   bookmyshow: "/images/bookmyshow.jpg",
   districtpaytm: "/images/paytm.jpg",
   pvr: "/images/pvr.jpg",
+  cleartrip: "/images/cleartrip.png",
+  swiggyinstamart: "/images/swiggy_instamart.jpg",
+  zepto: "/images/zepto.png",
   zomato:"/images/zomato.png",
   swiggy:"/images/swiggy.png",
   eazydiner:"/images/eazydiner.png"
