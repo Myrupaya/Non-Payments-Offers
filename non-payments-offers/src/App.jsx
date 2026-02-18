@@ -43,7 +43,7 @@ const CATEGORY_CONFIG = [
     key: "electronics",
     label: "Electronics Offers",
     folder: "Electronics-Offers",
-    files: ["croma.csv"],
+    files: ["amazon.csv", "croma.csv", "flipkart.csv", "reliance-digital.csv"],
   },
   {
     key: "dineout",
@@ -67,7 +67,7 @@ const CATEGORY_CONFIG = [
     key: "ecommerce",
     label: "Ecommerce Offers",
     folder: "Ecommerce-Offers",
-    files: ["croma.csv"],
+    files: ["amazon.csv", "croma.csv", "flipkart.csv", "reliance-digital.csv"],
   },
   {
     key: "lounge",
@@ -78,8 +78,8 @@ const CATEGORY_CONFIG = [
   {
     key: "clothing",
     label: "Clothing Offers",
-    folder: "Clothing-Offers",
-    files: ["Myntra.csv", "Ajio.csv", "TataCliq.csv"],
+    folder: "Cloths-Offers",
+    files: ["Ajio.csv", "Myntra.csv", "amazon.csv", "flipkart.csv"],
   },
 ];
 
@@ -108,7 +108,10 @@ const WEBSITE_LOGO_BY_SOURCE = {
   easemytrip: "/images/ease%20my%20trip.png",
   yatra: "/images/yatra.png",
   indigo: "/images/Indigo.png",
+  amazon: "/images/amazon.jpg",
   croma: "/images/croma.png",
+  flipkart: "/images/flipkart.jpg",
+  reliancedigital: "/images/reliance.png",
   bookmyshow: "/images/bookmyshow.jpg",
   districtpaytm: "/images/paytm.jpg",
   pvr: "/images/pvr.jpg",
@@ -117,7 +120,9 @@ const WEBSITE_LOGO_BY_SOURCE = {
   zepto: "/images/zepto.png",
   zomato:"/images/zomato.png",
   swiggy:"/images/swiggy.png",
-  eazydiner:"/images/eazydiner.png"
+  eazydiner:"/images/eazydiner.png",
+  ajio: "/images/ajio.jpeg",
+  myntra: "/images/myntra.png"
 };
 
 /** -------------------- HELPERS -------------------- */
