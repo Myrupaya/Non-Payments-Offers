@@ -55,7 +55,7 @@ const CATEGORY_CONFIG = [
     key: "delivery",
     label: "Delivery Offers",
     folder: "Delivery-Offers",
-    files: ["Swiggy.csv", "Zomato.csv", "UberEats.csv"],
+    files: ["Swiggy.csv", "Zomato.csv", "MagicPin.csv"],
   },
   {
     key: "grocery",
