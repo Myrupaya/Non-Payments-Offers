@@ -55,7 +55,7 @@ const CATEGORY_CONFIG = [
     key: "delivery",
     label: "Delivery Offers",
     folder: "Delivery-Offers",
-    files: ["Swiggy.csv", "Zomato.csv", "MagicPin.csv"],
+    files: ["Swiggy.csv", "Zomato.csv", "MagicPin.csv", "Eatsure.csv"],
   },
   {
     key: "grocery",
@@ -120,6 +120,7 @@ const WEBSITE_LOGO_BY_SOURCE = {
   zepto: "/images/zepto.png",
   zomato:"/images/zomato.png",
   swiggy:"/images/swiggy.png",
+  eatsure: "/images/eatsure.png",
   eazydiner:"/images/eazydiner.png",
   ajio: "/images/ajio.jpeg",
   myntra: "/images/myntra.png"
