@@ -37,7 +37,14 @@ const CATEGORY_CONFIG = [
     key: "bus",
     label: "Bus Offers",
     folder: "Bus-Offers",
-    files: ["Abhibus.csv", "goibibo.csv", "makemytrip.csv", "redbus.csv"],
+    files: [
+      "EaseMyTrip.csv",
+      "goibibo.csv",
+      "makemytrip.csv",
+      "redbus.csv",
+      "Cleartrip.csv",
+      "Abhibus.csv",
+    ],
   },
   {
     key: "electronics",
@@ -118,12 +125,12 @@ const WEBSITE_LOGO_BY_SOURCE = {
   cleartrip: "/images/cleartrip.png",
   swiggyinstamart: "/images/swiggy_instamart.jpg",
   zepto: "/images/zepto.png",
-  zomato:"/images/zomato.png",
-  swiggy:"/images/swiggy.png",
+  zomato: "/images/zomato.png",
+  swiggy: "/images/swiggy.png",
   eatsure: "/images/eatsure.png",
-  eazydiner:"/images/eazydiner.png",
+  eazydiner: "/images/eazydiner.png",
   ajio: "/images/ajio.jpeg",
-  myntra: "/images/myntra.png"
+  myntra: "/images/myntra.png",
 };
 
 /** -------------------- HELPERS -------------------- */
@@ -151,12 +158,10 @@ function isNonEmpty(v) {
 function pickField(row, candidates) {
   if (!row) return undefined;
 
-  // 1) direct match
   for (const k of candidates) {
     if (isNonEmpty(row[k])) return row[k];
   }
 
-  // 2) normalized match (handles Link_1, Link_2 and BOM headers)
   const wantedNorms = candidates.map(toKeyNorm);
   const keys = Object.keys(row);
 
@@ -186,10 +191,6 @@ function isYes(val) {
   return v === "yes" || v === "y" || v === "true" || v === "1";
 }
 
-/**
- * ✅ Only treat REAL URLs or public paths as usable images
- * - Rejects: "Chartered1.png", "Desktop Detail page.png" etc
- */
 function isUsableImage(val) {
   if (!val) return false;
   const s = String(val).trim();
@@ -203,35 +204,26 @@ function isUsableImage(val) {
   return false;
 }
 
-/** ✅ Link normalize (fix for AirIndia etc) */
 function normalizeLink(raw) {
   if (!raw) return "";
 
   let s = stripInvisible(String(raw)).trim();
   if (!s) return "";
 
-  // remove outer quotes
   s = s.replace(/^"+|"+$/g, "").trim();
 
-  // placeholders
   if (/^(na|n\/a|null|undefined|-|#)$/i.test(s)) return "";
 
-  // //example.com
   if (s.startsWith("//")) s = "https:" + s;
 
-  // www.example.com
   if (/^www\./i.test(s)) s = "https://" + s;
 
-  // no scheme but looks like a domain
   const looksLikeDomain = /^[a-z0-9.-]+\.[a-z]{2,}([/].*)?$/i.test(s);
   if (!/^https?:\/\//i.test(s) && looksLikeDomain) s = "https://" + s;
 
-  // must be http(s)
   if (!/^https?:\/\//i.test(s)) return "";
 
-  // validate URL
   try {
-    // eslint-disable-next-line no-new
     new URL(s);
     return s;
   } catch {
@@ -239,23 +231,14 @@ function normalizeLink(raw) {
   }
 }
 
-/**
- * ✅ Source key mapping:
- * - yatraDomestic / yatraInternational -> yatra
- * - easeMyTrip -> easemytrip
- * - district-paytm -> districtpaytm
- * - Bookmyshow -> bookmyshow
- */
 function sourceKeyFromFile(fileName) {
   const base = toNorm(String(fileName || "").replace(/\.csv$/i, ""));
-
-  // remove spaces + - + _
   const cleaned = base.replace(/[\s\-_]/g, "");
 
   if (cleaned.startsWith("yatra")) return "yatra";
   if (cleaned.includes("easemytrip")) return "easemytrip";
 
-  return cleaned; // airindia, goibibo, indigo, makemytrip, districtpaytm, bookmyshow, pvr, etc
+  return cleaned;
 }
 
 function prettySourceName(fileName) {
@@ -265,7 +248,6 @@ function prettySourceName(fileName) {
   return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** ✅ resolve image: if missing/invalid -> website logo */
 function resolveImage(candidate, sourceFileName) {
   const srcKey = sourceKeyFromFile(sourceFileName);
   const websiteLogo = WEBSITE_LOGO_BY_SOURCE[srcKey] || "";
@@ -276,7 +258,6 @@ function resolveImage(candidate, sourceFileName) {
   return { src: websiteLogo, usingFallback: true, fallbackSrc: websiteLogo };
 }
 
-/** ✅ if image 404 -> swap to logo */
 function handleImgError(e) {
   const el = e.currentTarget;
   const fallback = el.getAttribute("data-fallback") || "";
@@ -288,7 +269,6 @@ function handleImgError(e) {
   el.style.display = "none";
 }
 
-/** Disclaimer */
 const Disclaimer = () => (
   <section className="disclaimer">
     <h3>Disclaimer</h3>
@@ -335,7 +315,6 @@ export default function NonPaymentOffers() {
             const parsed = Papa.parse(res.data, {
               header: true,
               skipEmptyLines: true,
-              // ✅ FIX: also strip BOM/zero-width from headers
               transformHeader: (h) => stripInvisible(String(h || "")).trim(),
             });
 
@@ -363,7 +342,6 @@ export default function NonPaymentOffers() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** ✅ Filter only Non-Payments-Offers = yes */
   const offers = useMemo(() => {
     const out = [];
     const NONPAY_KEYS = [
@@ -389,7 +367,6 @@ export default function NonPaymentOffers() {
     return out;
   }, [rawRows]);
 
-  /** Group offers by CSV source file */
   const groupedOffers = useMemo(() => {
     const map = new Map();
     for (const row of offers) {
@@ -401,7 +378,6 @@ export default function NonPaymentOffers() {
     return map;
   }, [offers]);
 
-  /** Render groups in SAME order as config files */
   const orderedSourceKeys = useMemo(() => {
     const inOrder = (activeCat?.files || []).map((f) => prettySourceName(f));
     for (const k of groupedOffers.keys()) {
@@ -419,11 +395,9 @@ export default function NonPaymentOffers() {
     const terms = pickField(row, LIST_FIELDS.terms);
     const coupon = pickField(row, LIST_FIELDS.coupon);
 
-    // ✅ Link field decides the button
     const rawLink = pickField(row, LIST_FIELDS.link);
     const normalizedLink = useMemo(() => normalizeLink(rawLink), [rawLink]);
 
-    // ✅ show button if link exists + valid URL format
     const hasLink = !!normalizedLink;
 
     const { src: imgSrc, usingFallback, fallbackSrc } = resolveImage(rawImage, sourceFileName);
@@ -480,7 +454,6 @@ export default function NonPaymentOffers() {
             )}
           </div>
 
-          {/* ✅ Button only if link exists (valid URL format) + sticks to bottom */}
           {hasLink ? (
             <div className="offer-cta">
               <button className="btn btn-full" onClick={() => window.open(normalizedLink, "_blank")}>
