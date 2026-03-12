@@ -44,6 +44,7 @@ const CATEGORY_CONFIG = [
       "redbus.csv",
       "Cleartrip.csv",
       "Abhibus.csv",
+      "Confirmtkt.csv",
     ],
   },
   {
@@ -111,6 +112,7 @@ const WEBSITE_LOGO_BY_SOURCE = {
   goibibo: "/images/goibibo.png",
   redbus: "/images/redbus.png",
   abhibus: "/images/abhibus.png",
+  confirmtkt: "/images/confirmtkt.png",
   ixigo: "/images/ixigo.png",
   easemytrip: "/images/ease%20my%20trip.png",
   yatra: "/images/yatra.png",
