@@ -148,13 +148,9 @@ body{
   width: 100%;
 }
 
-/* logo fallback looks better */
+/* Keep both offer creatives and fallback logos fully visible */
 .offer-img.is-fallback{
   background:#fff;
-  object-fit:contain;
-  padding:16px;
-  height:220px;
-  box-sizing:border-box;
 }
 
 
@@ -250,17 +246,17 @@ body{
 .offer-img{
   width:100%;
   height:220px;
-  object-fit:cover;
+  object-fit:contain;
+  object-position:center;
+  background:#fff;
+  padding:16px;
+  box-sizing:border-box;
   display:block;
 }
 
-/* When we're showing a site logo fallback, don't crop it */
+/* Fallback logos share the same fit behavior */
 .offer-img.is-fallback{
   background:#fff;
-  object-fit:contain;
-  padding:16px;
-  height:220px;
-  box-sizing:border-box;
 }
 
 .offer-info{
@@ -479,9 +475,6 @@ marquee{
   .offer-img{
     height:200px;
   }
-  .offer-img.is-fallback{
-    height:200px;
-  }
 }
 
 @media (max-width: 768px){
@@ -501,7 +494,6 @@ marquee{
   }
   .offer-img.is-fallback{
     height:auto;
-    padding:20px;
   }
 
   .offer-title{
