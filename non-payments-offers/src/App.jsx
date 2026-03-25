@@ -46,7 +46,7 @@ const CATEGORY_CONFIG = [
     label: "Bus Offers",
     folder: "Bus-Offers",
     files: [
-      "EaseMyTrip.csv",
+      "Easemytrip.csv",
       "goibibo.csv",
       "makemytrip.csv",
       "redbus.csv",
