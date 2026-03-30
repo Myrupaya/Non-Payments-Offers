@@ -77,7 +77,13 @@ const CATEGORY_CONFIG = [
     key: "grocery",
     label: "Grocery Offers",
     folder: "Grocery-Offers",
-    files: ["blinkit.csv", "zepto.csv", "swiggy_instamart.csv"],
+    files: [
+      "blinkit.csv",
+      "zepto.csv",
+      "swiggy_instamart.csv",
+      "Flipkart_min.csv",
+      "Jio_mart.csv",
+    ],
   },
   {
     key: "ecommerce",
@@ -135,6 +141,8 @@ const WEBSITE_LOGO_BY_SOURCE = {
   cleartrip: "/images/cleartrip.png",
   swiggyinstamart: "/images/swiggy_instamart.jpg",
   zepto: "/images/zepto.png",
+  flipkartmin: "/images/Flipkart_min.jpeg",
+  jiomart: "/images/Jio_mart.png",
   zomato: "/images/zomato.png",
   swiggy: "/images/swiggy.png",
   eatsure: "/images/eatsure.png",
@@ -253,6 +261,8 @@ function sourceKeyFromFile(fileName) {
 
 function prettySourceName(fileName) {
   const raw = String(fileName || "").replace(/\.csv$/i, "");
+  if (raw === "Flipkart_min") return "Flipkart Minutes";
+  if (raw === "Jio_mart") return "Jio Mart";
   const spaced = raw.replace(/[-_]/g, " ").trim();
   if (!spaced) return "";
   return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
