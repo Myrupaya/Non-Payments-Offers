@@ -321,6 +321,7 @@ export default function NonPaymentOffers() {
   const [loading, setLoading] = useState(false);
   const [rawRows, setRawRows] = useState([]);
   const [error, setError] = useState("");
+  const [loadWarning, setLoadWarning] = useState("");
 
   const activeCat = useMemo(
     () => CATEGORY_CONFIG.find((c) => c.key === activeCategory) || null,
@@ -331,6 +332,7 @@ export default function NonPaymentOffers() {
     setActiveCategory(categoryKey);
     setLoading(true);
     setError("");
+    setLoadWarning("");
     setRawRows([]);
 
     try {
@@ -364,7 +366,9 @@ export default function NonPaymentOffers() {
 
       setRawRows(all);
 
-      if (failed.length) setError(`Some files failed to load: ${failed.join(", ")}`);
+      if (failed.length) {
+        setLoadWarning(`Skipped unavailable files: ${failed.join(", ")}`);
+      }
     } catch (e) {
       setError(e?.message || String(e));
     } finally {
@@ -397,14 +401,7 @@ export default function NonPaymentOffers() {
         }
       }
 
-      // These CSVs are curated for the non-payment offers app.
-      // Keep rows unless the source explicitly marks them as a negative.
-      if (!isNonEmpty(flag) || isYes(flag)) {
-        out.push(row);
-        continue;
-      }
-
-      if (!isNo(flag)) out.push(row);
+      if (isYes(flag)) out.push(row);
     }
 
     return out;
@@ -544,6 +541,7 @@ export default function NonPaymentOffers() {
               <p className="center-text error">{error}</p>
             ) : offers.length ? (
               <>
+                {loadWarning ? <p className="center-text error">{loadWarning}</p> : null}
                 {orderedSourceKeys.map((srcKey) => {
                   const rows = groupedOffers.get(srcKey) || [];
                   if (!rows.length) return null;
@@ -562,7 +560,10 @@ export default function NonPaymentOffers() {
                 })}
               </>
             ) : (
-              <p className="center-text error">No non-payment offers available</p>
+              <>
+                {loadWarning ? <p className="center-text error">{loadWarning}</p> : null}
+                <p className="center-text error">No non-payment offers available</p>
+              </>
             )}
           </div>
         </div>
