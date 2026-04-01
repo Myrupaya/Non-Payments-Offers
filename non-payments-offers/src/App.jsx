@@ -46,13 +46,14 @@ const CATEGORY_CONFIG = [
     label: "Bus Offers",
     folder: "Bus-Offers",
     files: [
-      "Easemytrip.csv",
       "goibibo.csv",
+      "Ixigo.csv",
       "makemytrip.csv",
       "redbus.csv",
       "Cleartrip.csv",
       "Abhibus.csv",
       "Confirmtkt.csv",
+      "Yatra.csv",
     ],
   },
   {
@@ -206,7 +207,21 @@ function valueByNormalizedKey(row, wantedKey) {
 
 function isYes(val) {
   const v = toNorm(val);
-  return v === "yes" || v === "y" || v === "true" || v === "1";
+  return (
+    v === "yes" ||
+    v === "y" ||
+    v === "true" ||
+    v === "1" ||
+    v === "non payment" ||
+    v === "non payments" ||
+    v === "non payment offers" ||
+    v === "non payments offers"
+  );
+}
+
+function isNo(val) {
+  const v = toNorm(val);
+  return v === "no" || v === "n" || v === "false" || v === "0";
 }
 
 function isUsableImage(val) {
@@ -381,7 +396,15 @@ export default function NonPaymentOffers() {
           break;
         }
       }
-      if (isYes(flag)) out.push(row);
+
+      // These CSVs are curated for the non-payment offers app.
+      // Keep rows unless the source explicitly marks them as a negative.
+      if (!isNonEmpty(flag) || isYes(flag)) {
+        out.push(row);
+        continue;
+      }
+
+      if (!isNo(flag)) out.push(row);
     }
 
     return out;
