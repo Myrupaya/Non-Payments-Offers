@@ -209,6 +209,7 @@ function isYes(val) {
   const v = toNorm(val);
   return (
     v === "yes" ||
+    v === "YES" ||
     v === "y" ||
     v === "true" ||
     v === "1" ||
